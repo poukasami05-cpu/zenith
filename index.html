@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZENITH | Future Footwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+              premium: {
+                black: '#0A0A0A',     // Deepest black
+                charcoal: '#1A1A1A',  // Soft black for cards
+                white: '#FAFAFA',     // Off-white
+                gray: '#A1A1AA',      // Muted text
+                accent: '#FF3B30',    // International Orange - High Visibility
+                glass: 'rgba(255, 255, 255, 0.05)',
+                darkGlass: 'rgba(10, 10, 10, 0.8)',
+              }
+            },
+            transitionTimingFunction: {
+              'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)', // Ultra smooth Apple-style easing
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'slide-up': 'slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'slide-in-right': 'slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'float': 'float 6s ease-in-out infinite',
+              'marquee': 'marquee 25s linear infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideInRight: {
+                '0%': { transform: 'translateX(100%)' },
+                '100%': { transform: 'translateX(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-15px)' },
+              },
+              marquee: {
+                '0%': { transform: 'translateX(0%)' },
+                '100%': { transform: 'translateX(-100%)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Custom Cursor */
+      body {
+        cursor: none;
+      }
+      .cursor-dot,
+      .cursor-outline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: 9999;
+        pointer-events: none;
+      }
+      .cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: black;
+      }
+      /* Dark mode cursor adjustments */
+      .dark .cursor-dot {
+        background-color: white;
+      }
+      
+      .cursor-outline {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+      }
+      .dark .cursor-outline {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Hover state for cursor */
+      body:hover .cursor-outline {
+        opacity: 1;
+      }
+      
+      /* Hide scrollbar but keep functionality */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      .glass-nav {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .dark .glass-nav {
+        background: rgba(10, 10, 10, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      
+      .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Smooth transitions for links */
+      a, button {
+        cursor: none; /* Let custom cursor handle it */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-premium-white text-premium-black dark:bg-premium-black dark:text-premium-white antialiased selection:bg-premium-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-500">
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <div id="root"></div>
+    
+    <script>
+      // Cursor Logic
+      const cursorDot = document.querySelector('.cursor-dot');
+      const cursorOutline = document.querySelector('.cursor-outline');
+
+      window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+
+        if (cursorDot && cursorOutline) {
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Add a little lag to outline for fluid feel
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        }
+      });
+
+      // Hover effects
+      document.querySelectorAll('a, button, .cursor-pointer').forEach(el => {
+          el.addEventListener('mouseenter', () => {
+              if (cursorOutline) {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(125,125,125,0.1)';
+                cursorOutline.style.borderColor = 'transparent';
+              }
+          });
+          el.addEventListener('mouseleave', () => {
+               if (cursorOutline) {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+                cursorOutline.style.borderColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
+               }
+          });
+      });
+
+      // Re-attach hover listeners for dynamic elements
+      const mutationObserver = new MutationObserver(() => {
+        document.querySelectorAll('a, button, .cursor-pointer').forEach(el => {
+          // ensure listeners are not added multiple times by checking a custom attribute
+          if (!el.hasAttribute('data-hover-attached')) {
+            el.setAttribute('data-hover-attached', 'true');
+            el.addEventListener('mouseenter', () => {
+                if (cursorOutline) {
+                    cursorOutline.style.transform = "translate(-50%, -50%) scale(1.5)";
+                    cursorOutline.style.backgroundColor = "rgba(125,125,125,0.1)";
+                    cursorOutline.style.borderColor = "transparent";
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                if (cursorOutline) {
+                    cursorOutline.style.transform = "translate(-50%, -50%) scale(1)";
+                    cursorOutline.style.backgroundColor = "transparent";
+                    cursorOutline.style.borderColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
+                }
+            });
+          }
+        });
+      });
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
